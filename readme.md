@@ -29,7 +29,7 @@
    [account](base/practice4a-std-thread-account)
    и
    [matrix-multiplication](base/practice4b-std-thread-matrix-multiplication)
-5. `det`: [часть 1](base-practice5-matrix-det-part1) (`IMatrix`, `Matrix`)
+5. `det`: [часть 1](base/practice5-matrix-det-part1) (`IMatrix`, `Matrix`)
 6. `det`: ⌛ (+ `SubMatrix`, `det`)
 
 
