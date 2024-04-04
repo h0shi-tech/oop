@@ -26,13 +26,15 @@
    [sfml](base/practice2c-sfml)
 3. [std::string](base/practice3-std-string)
 4. `std::thread`:
-   [банковский аккаунт](base/practice4a-std-thread-account)
+   [account](base/practice4a-std-thread-account)
    и
-   [параллельное умножение матриц](base/practice4b-std-thread-matrices).
+   [matrix-multiplication](base/practice4b-std-thread-matrix-multiplication)
+5. `det`: [часть 1](base-practice5-matrix-det-part1) (`IMatrix`, `Matrix`)
+6. `det`: ⌛ (+ `SubMatrix`, `det`)
 
 
 
-## Факультативные домашние задачи
+## Факультативные задачи
 
 [Порядок сдачи задач](electives-advanced/procedure.md)
 1. *В течение 1 недели после сдачи 2-ой лабы.* [Opaque Structs](electives-advanced/task1-opaque-structs.md)
