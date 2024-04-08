@@ -42,11 +42,16 @@
 3. *До 31 марта.* [Small String Optimization](electives-advanced/task3-sso.md)
 4. *До 31 марта.* [Параллельное умножение матриц](electives-advanced/task4-parallel-multiplication.md)
 5. *До 14 апреля.* [SharedPtr](electives-advanced/task5-shared-ptr.md)
-6. ⌛ Моделирование виртуальных методов на чистом Си
+6. ★ *До 14 апреля.* [Моделирование интерфейса на чистом Си](electives-advanced/task6-c-vmt.md)
 7. ⌛ Vector & Set, part 1: stl iterators
 8. ⌛ Vector & Set, part 2: polymorphic iterators
 9. ⌛ Map
 10. ⌛ Paint
+
+★
+Задачи на автомат.
+Автомат ставится первому человеку, приславшему корректное решение.
+Приславшим позже - исключительно на субъективное усмотрение преподавателя.
 
 
 
