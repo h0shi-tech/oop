@@ -118,6 +118,10 @@
     "duck.h"
     "main.c"
   )
+
+  if(MSVC)
+    target_compile_definitions("task6-animal" PUBLIC _CRT_SECURE_NO_WARNINGS)
+  endif()
   ```
 
 **2. Про файлы, которые должны *выглядеть строго следующим образом и никак иначе*.**
