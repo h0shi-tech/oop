@@ -8,7 +8,8 @@
   - [1.1 Подключение Turbo Vision](#11-подключение-turbo-vision)
   - [1.2 Отличие фреймворка от библиотеки](#12-отличие-фреймворка-от-библиотеки)
   - [1.3 Основной каркас](#13-основной-каркас)
-  - [1.4 TODO](#14-todo)
+  - [1.4 Окна и события](#14-окна-и-события)
+  - [1.5 Пример](#15-пример)
 - [2 Обязательное задание](#2-обязательное-задание)
   - [2.1 Общее задание](#21-общее-задание)
   - [2.2 Варианты](#22-варианты)
@@ -236,9 +237,284 @@ int main() {
 
 
 
-## 1.4 TODO
+## 1.4 Окна и события
 
-TODO
+Вся основная работа идёт в окнах (`TWindow`) и/или диалогах (`TDialog`).
+Разработчик описывает очередное окно/диалог как наследник `TWindow`/`TDialog`.
+В конструкторе наследника создаётся макет окна - создаются различные элементы управления и добавляются в окно/диалог с помощью метода `insert`.
+Полный список доступных элементов управления и предоставляемые им методы/события см. в книгах.
+Приведём некоторые из самых распространённых:
+- `TStaticText` - элемент управления для отображения неизменяемого текста ("подписи");
+- `TListBox` - элемент управления для отображения списка строк;
+- `TInputLine` - элемент управления для ввода строки;
+- `TButton` - элемент управления для отображения кнопки, нажатие на которую приведёт к генерированию события
+
+При создании кнопки можно указать номер команды (целое число типа `ushort`).
+Этот номер может быть как предопределённым (одно из значений, предоставляемых фреймворком), так и пользовательским.
+Пример предопределённой команды на уровне фреймворка - `const ushort cmQuit = 1`,
+см. также все константы, начинающиеся с `cm` - от слова `command`.
+
+Для реагирования на различные события (в том числе для выполнения команды при нажатии на кнопку),
+в классе-наследнике необходимо переопределить метод `handleEvent`:
+```cpp
+void handleEvent(TEvent& event) override {
+  TApplication::handleEvent(event);
+
+  switch (event.what) {
+  case evCommand:
+    switch (event.message.command) {
+      case ...: {
+        ...
+      }
+    }
+  }
+```
+
+В первой строке вызывается реализация метода из базового класса - для обработки тех событий,
+которые могут быть обработаны на уровне фреймворка без вмешательства разработчика.
+
+У объекта `event` есть поле `what`, которое определяет тип произошедшего события.
+Вот некоторые из предопределённых констант, которым может быть равно поле `what`:
+- `evMouseDown`;
+- `evMouseUp`;
+- `evMouseMove`;
+- `evMouseAuto`;
+- `evMouseWheel`;
+- `evKeyDown`;
+- `evCommand`.
+
+В зависимости от типа события (связано ли оно с клавиатурой, мышью или командой)
+у объекта `event` можно обратиться к одному из трёх вложенных объектов
+(все три объекта образуют `union`, так как в зависимости от типа события только одно из трех полей содержит данные):
+- `mouse`;
+- `keyDown`;
+- `message`.
+
+В текущей лабораторной работе в основном понадобится только обрабатывать события типа команды (`event.what == evCommand`),
+которые возникают при нажатии кнопки из строки статуса `TStatusItem` или обычной кнопки `TButton`.
+В этом случае в обработчике `handleEvent` проверяется значение кода команды (`event.message.command`),
+в зависимости от которого выполняется конкретное действие.
+
+
+
+## 1.5 Пример
+
+⚠ К сожалению, фреймворк Turbo Vision имеет не очень адекватные стили по умолчанию для окон и для всех модальных окон,
+родителем для которых выступает не `TDeskTop`, а другое окно или диалог.
+Поэтому при выполнении лабораторной рекомендуется ограничиться использованием только диалоговых окон (`TDialog`),
+родителем для любого из которых всегда будет выступать `TDeskTop`.
+Тем не менее использование `TWindow` со стандартным стилем не воспрещается (а со своим стилем - даже приветствуется).
+
+Ниже приведён пример, в котором:
+
+1. Описан класс `MessageDialog` для отображения простого диалогового окна с простым сообщением.
+2. Описан класс `ListDialog` для отображения сложного диалогового окна со списком строк и
+   и возможностью добавления новой строки в конец списка.
+3. В примере используются следующие команды:
+   - В строке статуса:
+     - `cmQuit` - предопределённая команда для выхода из приложения.
+       Обратите внимание, что в коде нет обработчика на эту команду.
+       Она обрабатывается базовой реализацией `TProgram::handleEvent`.
+     - `cmNew` - предопределённая команда для создания нового диалогового окна.
+       Несмотря на то, что команда предопределённая,
+       фреймворк в базовой реализации `handleEvent` это событие не обрабатывает.
+       Поэтому эта команда обрабатывается в переопределённом `handleEvent`.
+   - В диалоговом окне `ListDialog`:
+     - `cmCustomNew` - команда с этим номером генерируется при нажатии на кнопку "Add".
+       Событие, возникающее при выполнении этой команды, обрабатывается в переопределённом `handleEvent`.
+
+```cpp
+#include <cstring>
+#include <limits>
+#include <iostream>
+#include <string>
+#include <vector>
+
+// Uses_TKeys for kbCtrlN, kbCtrlX
+// Uses_ViewCommands for cmNew, cmQuit
+#define Uses_TApplication
+#define Uses_TButton
+#define Uses_TDeskTop
+#define Uses_TDialog
+#define Uses_TInputLine
+#define Uses_TKeys
+#define Uses_TListBox
+#define Uses_TStaticText
+#define Uses_TStatusLine
+#define Uses_TStatusItem
+#define Uses_TStatusDef
+#define Uses_TStringCollection
+#define Uses_ViewCommands
+#include <tvision/tv.h>
+
+class MessageDialog : public TDialog {
+private:
+  static TRect center(const TRect& parentBounds, const int messageSize) {
+    const TPoint parentSize = {
+      parentBounds.b.x - parentBounds.a.x,
+      parentBounds.b.y - parentBounds.a.y
+    };
+
+    const TPoint size = { messageSize + 5 , 8 };
+
+    // TODO Сделайте так, чтобы диалоговое окно с сообщением показывалось по центру родительского окна
+    return TRect(
+      parentBounds.a.x + 1,
+      parentBounds.a.y + 1,
+      parentBounds.a.x + size.x,
+      parentBounds.a.y + size.y
+    );
+  }
+
+public:
+  MessageDialog(const TRect& parentBounds, const std::string& title, const std::string& message) :
+    TDialog(center(parentBounds, static_cast<int>(message.size())), title.c_str()),
+    TWindowInit(TWindow::initFrame)
+  {
+    const auto staticText = new TStaticText(TRect(2, 2, size.x - 1, 3), message.c_str());
+    insert(staticText);
+
+    const auto button = new TButton(TRect(size.x - 8, 4, size.x - 2, 6), "Ok", cmOK, bfNormal);
+    insert(button);
+  }
+};
+
+class ListDialog : public TDialog {
+private:
+  std::vector<std::string> _items;
+
+  TDeskTop* _desktop;
+  TListBox* _listBox;
+  TInputLine* _newItemInputLine;
+
+  static TStringCollection* to_string_collection(const std::vector<std::string>& items) {
+    const auto stringCollection = new TStringCollection(static_cast<short>(items.size()), 0);
+    for (size_t i = 0; i < items.size(); ++i) {
+      const auto& item = items[i];
+      char* rawString = new char[item.size() + 1];
+      strcpy(rawString, item.c_str());
+      stringCollection->atInsert(static_cast<ccIndex>(i), rawString);
+    }
+    return stringCollection;
+  }
+
+  void addItem() {
+    std::string item(_newItemInputLine->data);
+    if (!item.empty()) {
+      _items.push_back(item);
+      _listBox->newList(to_string_collection(_items));
+      _newItemInputLine->setData(const_cast<void*>(static_cast<const void*>("")));
+    }
+    else {
+      const auto dialog = new MessageDialog(this->getBounds(), "Error", "A new element cannot be empty.");
+      _desktop->execView(dialog);
+      TObject::destroy(dialog);
+    }
+  }
+
+public:
+  static const ushort cmCustomAdd = 100;
+
+  ListDialog(TDeskTop* desktop, const TRect& bounds, TStringView title) :
+    TDialog(bounds, title),
+    TWindowInit(&TWindow::initFrame),
+    _desktop(desktop)
+  {
+    // _listBox
+    {
+      const auto listBoxText = new TStaticText(TRect(2, 2, size.x - 2, 3), "List:");
+      insert(listBoxText);
+
+      _listBox = new TListBox(TRect(2, 3, size.x - 2, size.y - 4), 1, nullptr);
+      insert(_listBox);
+    }
+
+    // _newItemInputLine + addButton
+    {
+      const auto textLinePrompt = new TStaticText(TRect(2, size.y - 3, 12, size.y - 2), "New item:");
+      insert(textLinePrompt);
+
+      _newItemInputLine = new TInputLine(TRect(12, size.y - 3, size.x - 13, size.y - 2), 17);
+      insert(_newItemInputLine);
+
+      const auto addButton = new TButton(TRect(size.x - 12, size.y - 3, size.x - 2, size.y - 1), "Add", cmCustomAdd, bfNormal);
+      insert(addButton);
+    }
+  }
+
+  ListDialog(const ListDialog&) = delete;
+
+  ListDialog& operator=(const ListDialog&) = delete;
+
+  void handleEvent(TEvent &event) override {
+    TWindow::handleEvent(event);
+
+    if (event.what == evCommand && event.message.command == cmCustomAdd) {
+      addItem();
+    }
+  }
+};
+
+class App : public TApplication {
+public:
+  App() :
+    TProgInit(
+      &App::initStatusLine,
+      nullptr,
+      &App::initDeskTop
+    )
+  { }
+
+  App(const App&) = delete;
+
+  App& operator=(const App&) = delete;
+
+  void handleEvent(TEvent &event) override {
+    TApplication::handleEvent(event);
+
+    if (event.what == evCommand && event.message.command == cmNew) {
+      newWindow();
+    }
+  }
+
+private:
+  void newWindow() {
+    const auto window = new ListDialog(deskTop, TRect(0, 0, deskTop->size.x, deskTop->size.y), "List");
+    deskTop->insert(window);
+  }
+
+  static TStatusLine* initStatusLine(TRect r) {
+    const auto defs = new TStatusDef(
+      std::numeric_limits<ushort>::min(),
+      std::numeric_limits<ushort>::max()
+    );
+
+    *defs
+      + *new TStatusItem("~Ctrl-X~ Exit", kbCtrlX, cmQuit)
+      + *new TStatusItem("~Ctrl+N~ New", kbCtrlN, cmNew);
+
+    r.a.y = r.b.y - 1;
+
+    return new TStatusLine(r, *defs);
+  }
+
+  static TDeskTop* initDeskTop(TRect r) {
+    --r.b.y;
+    return new TDeskTop(r);
+  }
+};
+
+int main() {
+  App app;
+
+  app.run();
+
+  return 0;
+}
+
+```
+
+TODO Описать некоторые нюансы в примере
 
 
 
@@ -271,4 +547,4 @@ TODO
 # 3 Факультативное задание
 
 1. Продемонстрировать работоспособность вашего проекта под операционной системой семейства Linux.
-1. TODO
+1. TODO Меню с сохранением/загрузкой
