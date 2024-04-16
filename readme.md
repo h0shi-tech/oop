@@ -8,7 +8,7 @@
 3. [Контейнеры](base/labs/lab3-containers.md)
 4. [Полиморфные классы](base/labs/lab4-polymorphism.md)
 5. [TUI](base/labs/lab5-tui.md)
-6. \* ⌛ GUI (факультативно)
+6. \* [GUI](base/labs/lab6-gui.md) (факультативно)
 
 
 
