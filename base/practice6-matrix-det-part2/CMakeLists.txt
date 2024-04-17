@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
 
-project("practice6-determinant" CXX)
+project("practice6-matrix-det-part-2" CXX)
 
 add_executable(${PROJECT_NAME} "main.cpp")
