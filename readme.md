@@ -30,7 +30,7 @@
    и
    [matrix-multiplication](base/practice4b-std-thread-matrix-multiplication)
 5. `det`: [часть 1](base/practice5-matrix-det-part1) (`IMatrix`, `Matrix`)
-6. `det`: ⌛ (`IMatrix`, `Matrix`, `SubMatrix`, `det`)
+6. `det`: ⌛ (`IMatrix`, `Matrix`, `SubMatrix`, `det`) и [введение в Qt](base/practice6-qt-intro.pdf)
 7. ⌛ ...
 
 
