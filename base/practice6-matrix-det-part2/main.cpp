@@ -77,7 +77,11 @@ private:
   size_t _dj;
 
 public:
-  ConstSubMatrix(const IMatrix& m, size_t di, size_t dj) : _m(m), _di(di), _dj(dj) {}
+  ConstSubMatrix(const IMatrix& m, size_t di, size_t dj) :
+    _m(m),
+    _di(di),
+    _dj(dj)
+  { }
 
   size_t rows() const noexcept override {
     return _m.rows() - 1;
@@ -131,24 +135,28 @@ double det(const IMatrix& m) {
 int main() {
   Matrix m(4, 4);
   m.set(0, 0, 1);
-  m.set(0, 1, 73);
-  m.set(0, 2, 42);
-  m.set(0, 3, 52);
-  m.set(1, 0, 82);
-  m.set(1, 1, 34);
-  m.set(1, 2, 85);
+  m.set(0, 1, 7);
+  m.set(0, 2, 4);
+  m.set(0, 3, 5);
+  m.set(1, 0, 8);
+  m.set(1, 1, 3);
+  m.set(1, 2, 8);
   m.set(1, 3, 7);
   m.set(2, 0, 3);
-  m.set(2, 1, 45);
-  m.set(2, 2, 76);
-  m.set(2, 3, 16);
-  m.set(3, 0, 13);
-  m.set(3, 1, 41);
-  m.set(3, 2, 12);
+  m.set(2, 1, 4);
+  m.set(2, 2, 7);
+  m.set(2, 3, 1);
+  m.set(3, 0, 1);
+  m.set(3, 1, 4);
+  m.set(3, 2, 1);
+  m.set(3, 3, 0);
 
   std::cout << m << std::endl;
 
   std::cout << std::fixed << det(m) << std::endl;
+
+  // Wolfram Alpha:
+  // https://www.wolframalpha.com/input?i=det+%7B%7B1%2C+7%2C+4%2C+5%7D%2C+%7B8%2C+3%2C+8%2C+7%7D%2C+%7B3%2C+4%2C+7%2C+1%7D%2C+%7B1%2C+4%2C+1%2C+0%7D%7D
 
   return 0;
 }
