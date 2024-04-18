@@ -57,11 +57,11 @@ public:
     return _cols;
   }
 
-  float get(size_t i, size_t j) const override {
+  float get(const size_t i, const size_t j) const override {
     return _data[i * _cols + j];
   }
 
-  void set(size_t i, size_t j, float value) override {
+  void set(const size_t i, const size_t j, float value) override {
     _data[i * _cols + j] = value;
   }
 };
@@ -77,7 +77,7 @@ private:
   size_t _dj;
 
 public:
-  ConstSubMatrix(const IMatrix& m, size_t di, size_t dj) :
+  ConstSubMatrix(const IMatrix& m, const size_t di, const size_t dj) :
     _m(m),
     _di(di),
     _dj(dj)
@@ -92,12 +92,16 @@ public:
   }
 
   float get(size_t i, size_t j) const override {
-    if (i >= _di) { i++; }
-    if (j >= _dj) { j++; }
+    if (i >= _di)
+      ++i;
+
+    if (j >= _dj)
+      ++j;
+
     return _m.get(i, j);
   }
 
-  void set(size_t i, size_t j, float value) override {
+  void set(const size_t i, const size_t j, const float value) override {
     throw std::logic_error("ConstSubMatrix is const.");
   }
 };
@@ -117,14 +121,14 @@ double det(const IMatrix& m) {
     return m.get(0, 0);
   }
 
-  double res = 0;
+  double r = 0;
 
   for (size_t j = 0; j < n; ++j) {
     const ConstSubMatrix sm(m, 0, j);
-    res += (j % 2 == 0 ? +1 : -1) * m.get(0, j) * det(sm);
+    r += (j % 2 == 0 ? +1 : -1) * m.get(0, j) * det(sm);
   }
 
-  return res;
+  return r;
 }
 
 
