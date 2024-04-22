@@ -26,7 +26,7 @@ public:
   IEnumerator<T>& operator=(const IEnumerator<T>&) = delete;
 
   virtual bool next() = 0;
-  virtual T& get_current() = 0;
+  virtual T& current() = 0;
 
   virtual ~IEnumerator() = default;
 
@@ -79,7 +79,9 @@ class Set : public IEnumerable<Key> {
    - разрешается не имплементировать `capacity`.
    
    Поведение всех методов должно быть эквивалентно поведению методов соответствующего STL-контейнера.
-2. Обратите внимание, что `IEnumerable` не запрещает копирование, а лишь скрывает его на своём уровне.
+2. `IEnumerator<T>::current()` должен генерировать исключение `std::logic_error`,
+   если метод `IEnumerator<T>::next()` не вызывался вообще или если последний вызов вернул `false`.
+3. Обратите внимание, что `IEnumerable` не запрещает копирование, а лишь скрывает его на своём уровне.
    Таким образом, конкретные наследники (`Vector` и `Set`) могут (и должны) быть копируемыми.
 4. Если всё сделано верно, помимо всего прочего, должен работать и код следующего вида:
    ```cpp
@@ -92,7 +94,7 @@ class Set : public IEnumerable<Key> {
    void print(IEnumerable<std::string>& container) {
      auto e = v.get_enumerator();
      while (e->next()) {
-       std::cout << e->get_current() << std::endl;
+       std::cout << e->current() << std::endl;
      }
      std::cout << std::endl;
    }
