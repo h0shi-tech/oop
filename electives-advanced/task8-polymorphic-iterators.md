@@ -9,7 +9,7 @@
 
 ## Задание
 
-Разработать полимфорфные контейнеры `Vector` (аналог `std::vector`) и `Set`
+Разработать **полиморфные** контейнеры `Vector` (аналог `std::vector`) и `Set`
 (аналог `std::unordered_set`, см. предыдущую задачу).
 
 В качестве основы взять следующую заготовку:
@@ -18,13 +18,30 @@
 
 template<typename T>
 class IEnumerator {
+public:
+  IEnumerator(const IEnumerator<T>&) = delete;
+  IEnumerator<T>& operator=(const IEnumerator<T>&) = delete;
+
   virtual bool next() = 0;
   virtual T& get_current() = 0;
+
+  virtual ~IEnumerator() = default;
+
+protected:
+  IEnumerator() = default;
 };
 
 template<typename T>
 class IEnumerable {
+public:
   virtual std::unique_ptr<Iterator<T>> get_enumerator() = 0;
+
+  virtual ~IEnumerable() = default;
+
+protected:
+  IEnumerable() = default;
+  IEnumerable(const IEnumerable<T>&) = default;
+  IEnumerable<T>& operator=(const IEnumerable<T>&) = default;
 };
 
 template<typename T>
@@ -59,7 +76,9 @@ class Set : public IEnumerable<Key> {
    - разрешается не имплементировать `capacity`.
    
    Поведение всех методов должно быть эквивалентно поведению методов соответствующего STL-контейнера.
-2. Если всё сделано верно, помимо всего прочего, должен работать и код следующего вида:
+2. Обратите внимание, что `IEnumerable` не запрещает копирование, а лишь скрывает его на своём уровне.
+   Таким образом, конкретные наследники (`Vector` и `Set`) могут (и должны) быть копируемыми.
+4. Если всё сделано верно, помимо всего прочего, должен работать и код следующего вида:
    ```cpp
    // В данном примере допускается сделать print шаблонной функцией.
    // Но шаблонным аргументом должен быть исключительно
