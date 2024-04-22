@@ -37,7 +37,7 @@ protected:
 template<typename T>
 class IEnumerable {
 public:
-  virtual std::unique_ptr<Iterator<T>> get_enumerator() = 0;
+  virtual std::unique_ptr<Iterator<T>> enumerator() = 0;
 
   virtual ~IEnumerable() = default;
 
@@ -92,7 +92,7 @@ class Set : public IEnumerable<Key> {
    // void print(IEnumerable<T>& container);
 
    void print(IEnumerable<std::string>& container) {
-     auto e = v.get_enumerator();
+     auto e = v.enumerator();
      while (e->next()) {
        std::cout << e->current() << std::endl;
      }
