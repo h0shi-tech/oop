@@ -37,7 +37,7 @@ protected:
 template<typename T>
 class IEnumerable {
 public:
-  virtual std::unique_ptr<Iterator<T>> enumerator() = 0;
+  virtual std::unique_ptr<IEnumerator<T>> enumerator() = 0;
 
   virtual ~IEnumerable() = default;
 
