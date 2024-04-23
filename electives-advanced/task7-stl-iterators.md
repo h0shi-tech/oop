@@ -39,6 +39,7 @@
    Данный класс должен быть объявлен/определен внутри `public`-секции класса `Set` (`Set::Iterator`).
 6. Предоставить следующие методы в контейнере
    (их поведение должно быть эквивалентно поведению методов `std::unordered_set`):
+   - `Iterator begin();`
    - `Iterator end();`
    - `size_t size() const;`
    - `Iterator find(const Key& key);`
