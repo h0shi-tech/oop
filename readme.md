@@ -80,7 +80,7 @@
 3. *До 31 марта.* [Small String Optimization](electives-advanced/task3-sso.md)
 4. *До 31 марта.* [Параллельное умножение матриц](electives-advanced/task4-parallel-multiplication.md)
 5. *До 14 апреля.* [SharedPtr](electives-advanced/task5-shared-ptr.md)
-6. *До 14 апреля (★)., до 28 апреля.* [Моделирование интерфейса на чистом Си](electives-advanced/task6-c-vmt.md)
+6. *До 14 апреля (★), до 28 апреля.* [Моделирование интерфейса на чистом Си](electives-advanced/task6-c-vmt.md)
 7. *До 28 апреля (★).* [Структуры данных и итераторы STL](electives-advanced/task7-stl-iterators.md)
 8. *До 28 апреля (★).* [Структуры данных и полиморфные итераторы](electives-advanced/task8-polymorphic-iterators.md)
 9. *5 июня.* Проект
