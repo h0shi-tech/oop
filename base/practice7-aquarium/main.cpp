@@ -1,12 +1,20 @@
-﻿#include <QApplication>
+﻿// Потенциальные TODO:
+// 1) разделить объявления и определения;
+// 2) вынести все пути к файлам в одно место;
+// 3) плавно изменять количество рыбок;
+// 4) дать каждой рыбке свою скорость;
+// 5) добавить возможность рыбке двигаться не только слева направо, но и справа налево;
+// 6) добавить возможность рыбке двигаться не строго по горизонтали, а под некоторым небольшим углом.
+
+#include <QApplication>
 
 #include "main_window.h"
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
+int main(int argc, char* argv[]) {
+  QApplication app(argc, argv);
 
-    MainWindow window;
-    window.show();
+  MainWindow window;
+  window.show();
 
-    return QApplication::exec();
+  return QApplication::exec();
 }

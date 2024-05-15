@@ -49,6 +49,7 @@ public:
     );
 
     const auto form_layout = new QFormLayout();
+    form_layout->setLabelAlignment(Qt::AlignRight);
     form_layout->addRow(u8"Количество рыб:", fish_count_slider);
     form_layout->addRow(u8"Скорость:", speed_slider);
 
@@ -59,6 +60,7 @@ public:
     root_layout->addLayout(form_layout);
     root_layout->addWidget(button);
     root_layout->setAlignment(button, Qt::AlignRight);
+
     setLayout(root_layout);
 
     setFixedSize(sizeHint());
