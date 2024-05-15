@@ -8,7 +8,11 @@
 #include <integrators/newton_leibniz_integrator.h>
 #include <integrators/riemann_sum_integrator.h>
 
-static void test(const Function& function, const std::vector<std::unique_ptr<Integrator>>& integrators, const std::vector<std::pair<float, float>> intervals) {
+static void test(
+  const Function& function,
+  const std::vector<std::unique_ptr<Integrator>>& integrators,
+  const std::vector<std::pair<float, float>> intervals)
+{
   {
     std::cout << "Testing the following integrators: ";
     bool is_first = true;
