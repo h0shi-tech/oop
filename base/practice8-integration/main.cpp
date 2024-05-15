@@ -1,6 +1,6 @@
 #include <cstdlib>
-#include <iostream>
 #include <format>
+#include <iostream>
 
 #include <functions/polynomial_function.h>
 
@@ -57,11 +57,11 @@ int main() {
     polynom,
     integrators,
     {
-      {-4.0f, 0.0f},
+      {-4.0f,  0.00f},
       {-4.0f, -3.75f},
-      {-4.0f, -3.0f},
-      {-3.0f, -2.0f},
-      {1.0f, 2.0f}
+      {-4.0f, -3.00f},
+      {-3.0f, -2.00f},
+      { 1.0f,  2.00f}
     }
   );
 
