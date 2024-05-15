@@ -1,11 +1,11 @@
-#include <QApplication>
+﻿#include <QApplication>
 #include <QWidget>
 
-int main(int argc, char* argv[]) {
-  QApplication app(argc, argv);
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
 
-  QWidget widget;
-  widget.show();
+    QWidget window;
+    window.show();
 
-  return QApplication::exec();
+    return QApplication::exec();
 }
